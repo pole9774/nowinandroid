@@ -35,4 +35,22 @@ dependencies {
 
     androidTestImplementation(libs.bundles.androidx.compose.ui.test)
     androidTestImplementation(projects.core.testing)
+
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.5.0")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.4")
+    androidTestImplementation("androidx.compose.ui:ui-test-manifest:1.5.4")
+}
+
+configurations.all {
+    resolutionStrategy {
+        // Force consistent versions for test libraries
+        force("androidx.test:core:1.5.0")
+        force("androidx.test:monitor:1.6.1")
+        force("androidx.test:runner:1.5.0")
+        force("androidx.test.espresso:espresso-core:3.5.1")
+    }
 }
