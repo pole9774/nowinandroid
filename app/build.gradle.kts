@@ -132,6 +132,12 @@ dependencies {
     androidTestImplementation(libs.kotlin.test)
 
     baselineProfile(projects.benchmarks)
+
+    androidTestImplementation(libs.appium.java.client)
+    androidTestImplementation(libs.selenium.java)
+    androidTestImplementation(libs.testng)
+    androidTestImplementation(libs.slf4j.api)
+    androidTestImplementation(libs.slf4j.simple)
 }
 
 baselineProfile {
