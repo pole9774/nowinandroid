@@ -24,7 +24,7 @@ public class AppiumTest {
 
     private AndroidDriver driver;
 
-    // Utility function to swipe vertically (top to bottom)
+    // Utility function to swipe vertically (the finger goes from bottom to top)
     public void swipeUp(String containerXPath) {
         WebElement container = driver.findElement(AppiumBy.xpath(containerXPath));
 
@@ -43,7 +43,7 @@ public class AppiumTest {
         driver.perform(Collections.singletonList(swipe));
     }
 
-    // Utility function to swipe vertically (bottom to top)
+    // Utility function to swipe vertically (the finger goes top to bottom)
     public void swipeDown(String containerXPath) {
         WebElement container = driver.findElement(AppiumBy.xpath(containerXPath));
 
@@ -494,6 +494,69 @@ public class AppiumTest {
             WebElement back_arrow = driver.findElement(AppiumBy.accessibilityId("Back"));
             Assert.assertTrue(back_arrow.isDisplayed(), "Back arrow is not displayed!");
             back_arrow.click();
+
+            // Swipe up and uncheck topic
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeDown(news_view_xpath);
+                swipes++;
+            }
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
+            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            sample_topic2.click();
+        } catch (NoSuchElementException e) {
+            Assert.fail("Element not found: " + e.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void newsResourceCard_showsCorrectFields() {
+        int maxSwipes = 20;
+        int swipes = 0;
+
+        try {
+            // Search and check the 'Headlines' topic
+            WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
+            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            sample_topic.click();
+
+            // Swipe until title of the first resource card is found
+            String news_view_xpath = "//android.view.View[@resource-id=\"forYou:feed\"]";
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+            WebElement title = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]"));
+            Assert.assertTrue(title.isDisplayed(), "Title is not displayed!");
+
+            // Swipe until bookmark of the first resource card is found
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+            WebElement bookmark = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
+            Assert.assertTrue(bookmark.isDisplayed(), "Bookmark is not displayed!");
+
+            // Swipe until date-type of the first resource card is found
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"7 Ott 2022 • Article \uD83D\uDCDA\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+            WebElement date_type = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"7 Ott 2022 • Article \uD83D\uDCDA\"]"));
+            Assert.assertTrue(date_type.isDisplayed(), "Date-type is not displayed!");
+
+            // Swipe until description of the first resource card is found
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"We launched the Google Pixel Watch, powered by Wear OS 3.5, at the Made by Google event — the perfect device to showcase apps built with Compose for Wear OS. With Compose for Wear OS, the Tiles Material library, and the tools in Android Studio Dolphin, it’s now simpler and more efficient than ever to make apps for WearOS.\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+            WebElement description = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"We launched the Google Pixel Watch, powered by Wear OS 3.5, at the Made by Google event — the perfect device to showcase apps built with Compose for Wear OS. With Compose for Wear OS, the Tiles Material library, and the tools in Android Studio Dolphin, it’s now simpler and more efficient than ever to make apps for WearOS.\"]"));
+            Assert.assertTrue(description.isDisplayed(), "Description is not displayed!");
 
             // Swipe up and uncheck topic
             swipes = 0;
