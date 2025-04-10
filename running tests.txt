@@ -1,2 +1,8 @@
-app -> kotlin -> androidTest
-core -> ui -> kotlin -> androidTest
+app -> kotlin -> androidTest -> NavigationTest (12)
+core -> ui -> kotlin -> androidTest (5)
+feature -> bookmarks -> kotlin -> androidTest (5)
+feature -> foryou -> kotlin -> androidTest (7)
+feature -> interests -> kotlin -> androidTest (3)
+feature -> search -> kotlin -> androidTest (7)
+feature -> settings -> kotlin -> androidTest (6)
+feature -> topic -> kotlin -> androidTest (4)
