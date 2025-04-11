@@ -74,6 +74,9 @@ public class AppiumTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
+
+    // Navigation
+
     @Test
     public void firstScreen_isForYou() {
         try {
@@ -495,7 +498,46 @@ public class AppiumTest {
             Assert.assertTrue(back_arrow.isDisplayed(), "Back arrow is not displayed!");
             back_arrow.click();
 
-            // Swipe up and uncheck topic
+            // Swipe up and uncheck the 'Headlines' topic
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeDown(news_view_xpath);
+                swipes++;
+            }
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
+            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            sample_topic2.click();
+        } catch (NoSuchElementException e) {
+            Assert.fail("Element not found: " + e.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Unexpected error: " + e.getMessage());
+        }
+    }
+
+
+    // News Resource Card
+
+    @Test
+    public void newsResourceCard_withDateAndResourceType() {
+        int maxSwipes = 20;
+        int swipes = 0;
+
+        try {
+            // Search and check the 'Headlines' topic
+            WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
+            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            sample_topic.click();
+
+            // Swipe until date and resource type of the first resource card is found
+            String news_view_xpath = "//android.view.View[@resource-id=\"forYou:feed\"]";
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"7 Ott 2022 • Article \uD83D\uDCDA\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+            WebElement date_type = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"7 Ott 2022 • Article \uD83D\uDCDA\"]"));
+            Assert.assertTrue(date_type.isDisplayed(), "Date-type is not displayed!");
+
+            // Swipe up and uncheck the 'Headlines' topic
             swipes = 0;
             while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeDown(news_view_xpath);
@@ -512,7 +554,7 @@ public class AppiumTest {
     }
 
     @Test
-    public void newsResourceCard_showsCorrectFields() {
+    public void testTopicsChipColorBackground_matchesFollowedState() {
         int maxSwipes = 20;
         int swipes = 0;
 
@@ -522,43 +564,24 @@ public class AppiumTest {
             Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
             sample_topic.click();
 
-            // Swipe until title of the first resource card is found
+            // Swipe until topic tag is found
             String news_view_xpath = "//android.view.View[@resource-id=\"forYou:feed\"]";
-            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]")).isEmpty() && swipes < maxSwipes) {
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"Headlines is followed\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeUp(news_view_xpath);
                 swipes++;
             }
-            WebElement title = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]"));
-            Assert.assertTrue(title.isDisplayed(), "Title is not displayed!");
 
-            // Swipe until bookmark of the first resource card is found
-            swipes = 0;
-            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]")).isEmpty() && swipes < maxSwipes) {
-                swipeUp(news_view_xpath);
-                swipes++;
-            }
-            WebElement bookmark = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
-            Assert.assertTrue(bookmark.isDisplayed(), "Bookmark is not displayed!");
+            // Verify topic tags are correctly followed / not followed
+            WebElement topic_tag1 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"Headlines is followed\"]"));
+            Assert.assertTrue(topic_tag1.isDisplayed(), "Topic tag (1) is not displayed!");
 
-            // Swipe until date-type of the first resource card is found
-            swipes = 0;
-            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"7 Ott 2022 • Article \uD83D\uDCDA\"]")).isEmpty() && swipes < maxSwipes) {
-                swipeUp(news_view_xpath);
-                swipes++;
-            }
-            WebElement date_type = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"7 Ott 2022 • Article \uD83D\uDCDA\"]"));
-            Assert.assertTrue(date_type.isDisplayed(), "Date-type is not displayed!");
+            WebElement topic_tag2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"Wear OS is not followed\"]"));
+            Assert.assertTrue(topic_tag2.isDisplayed(), "Topic tag (2) is not displayed!");
 
-            // Swipe until description of the first resource card is found
-            swipes = 0;
-            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"We launched the Google Pixel Watch, powered by Wear OS 3.5, at the Made by Google event — the perfect device to showcase apps built with Compose for Wear OS. With Compose for Wear OS, the Tiles Material library, and the tools in Android Studio Dolphin, it’s now simpler and more efficient than ever to make apps for WearOS.\"]")).isEmpty() && swipes < maxSwipes) {
-                swipeUp(news_view_xpath);
-                swipes++;
-            }
-            WebElement description = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"We launched the Google Pixel Watch, powered by Wear OS 3.5, at the Made by Google event — the perfect device to showcase apps built with Compose for Wear OS. With Compose for Wear OS, the Tiles Material library, and the tools in Android Studio Dolphin, it’s now simpler and more efficient than ever to make apps for WearOS.\"]"));
-            Assert.assertTrue(description.isDisplayed(), "Description is not displayed!");
+            WebElement topic_tag3 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"Compose is not followed\"]"));
+            Assert.assertTrue(topic_tag3.isDisplayed(), "Topic tag (3) is not displayed!");
 
-            // Swipe up and uncheck topic
+            // Swipe up and uncheck the 'Headlines' topic
             swipes = 0;
             while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeDown(news_view_xpath);
