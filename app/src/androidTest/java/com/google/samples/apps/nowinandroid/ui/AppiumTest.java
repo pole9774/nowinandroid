@@ -597,6 +597,219 @@ public class AppiumTest {
         }
     }
 
+
+    // Bookmarks screen (saved)
+
+    @Test
+    public void feed_whenHasBookmarks_showsBookmarks() {
+        int maxSwipes = 20;
+        int swipes = 0;
+
+        try {
+            // Search and check the 'Headlines' topic
+            WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
+            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            sample_topic.click();
+
+            // Swipe until the first resource's title is found
+            String news_view_xpath = "//android.view.View[@resource-id=\"forYou:feed\"]";
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+
+            // Bookmark the first resource
+            WebElement bookmark1 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
+            Assert.assertTrue(bookmark1.isDisplayed(), "First bookmark is not displayed!");
+            bookmark1.click();
+
+            // Swipe until the second resource's title is found
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"Android Dev Summit ’22: Coming to you, online and around the world! ⛰\uFE0F\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+
+            // Bookmark the second resource
+            WebElement bookmark2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
+            Assert.assertTrue(bookmark2.isDisplayed(), "First bookmark is not displayed!");
+            bookmark2.click();
+
+            // Go to 'Saved' tab
+            WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
+            Assert.assertTrue(saved.isDisplayed(), "Saved is not displayed!");
+            saved.click();
+
+            // Swipe until the titles of both the bookmarked resources are found
+            String saved_view_xpath = "//android.view.View[@resource-id=\"bookmarks:feed\"]";
+
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(saved_view_xpath);
+                swipes++;
+            }
+
+            WebElement saved_title1 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]"));
+            Assert.assertTrue(saved_title1.isDisplayed(), "First saved title is not displayed!");
+
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"Android Dev Summit ’22: Coming to you, online and around the world! ⛰\uFE0F\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(saved_view_xpath);
+                swipes++;
+            }
+
+            WebElement saved_title2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Android Dev Summit ’22: Coming to you, online and around the world! ⛰\uFE0F\"]"));
+            Assert.assertTrue(saved_title2.isDisplayed(), "Second saved title is not displayed!");
+
+            // Go to 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
+            Assert.assertTrue(for_you.isDisplayed(), "For you is not displayed!");
+            for_you.click();
+
+            // Swipe up and un-bookmark resources
+            swipes = 0;
+            while ((driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"Android Dev Summit ’22: Coming to you, online and around the world! ⛰\uFE0F\"]")).isEmpty() || driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]")).isEmpty()) && swipes < maxSwipes) {
+                swipeDown(news_view_xpath);
+                swipes++;
+            }
+
+            WebElement un_bookmark1 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]"));
+            Assert.assertTrue(un_bookmark1.isDisplayed(), "Second un-bookmark is not displayed!");
+            un_bookmark1.click();
+
+            swipes = 0;
+            while ((driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]")).isEmpty() || driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]")).isEmpty()) && swipes < maxSwipes) {
+                swipeDown(news_view_xpath);
+                swipes++;
+            }
+
+            WebElement un_bookmark = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]"));
+            Assert.assertTrue(un_bookmark.isDisplayed(), "First un-bookmark is not displayed!");
+            un_bookmark.click();
+
+            // Swipe up and uncheck the 'Headlines' topic
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeDown(news_view_xpath);
+                swipes++;
+            }
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
+            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            sample_topic2.click();
+        } catch (NoSuchElementException e) {
+            Assert.fail("Element not found: " + e.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void feed_whenRemovingBookmark_removesBookmark() {
+        int maxSwipes = 20;
+        int swipes = 0;
+
+        try {
+            // Search and check the 'Headlines' topic
+            WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
+            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            sample_topic.click();
+
+            // Swipe until the first resource's title is found
+            String news_view_xpath = "//android.view.View[@resource-id=\"forYou:feed\"]";
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+
+            // Bookmark the first resource
+            WebElement bookmark1 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
+            Assert.assertTrue(bookmark1.isDisplayed(), "First bookmark is not displayed!");
+            bookmark1.click();
+
+            // Swipe until the second resource's title is found
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"Android Dev Summit ’22: Coming to you, online and around the world! ⛰\uFE0F\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(news_view_xpath);
+                swipes++;
+            }
+
+            // Bookmark the second resource
+            WebElement bookmark2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
+            Assert.assertTrue(bookmark2.isDisplayed(), "First bookmark is not displayed!");
+            bookmark2.click();
+
+            // Go to 'Saved' tab
+            WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
+            Assert.assertTrue(saved.isDisplayed(), "Saved is not displayed!");
+            saved.click();
+
+            // Un-bookmark
+            String saved_view_xpath = "//android.view.View[@resource-id=\"bookmarks:feed\"]";
+
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"The new Google Pixel Watch is here  — start building for Wear OS! ⌚\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(saved_view_xpath);
+                swipes++;
+            }
+
+            WebElement un_bookmark1 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]"));
+            Assert.assertTrue(un_bookmark1.isDisplayed(), "Un-bookmark (1) is not displayed!");
+            un_bookmark1.click();
+
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"Android Dev Summit ’22: Coming to you, online and around the world! ⛰\uFE0F\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeUp(saved_view_xpath);
+                swipes++;
+            }
+
+            WebElement un_bookmark2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]"));
+            Assert.assertTrue(un_bookmark2.isDisplayed(), "Un-bookmark (2) is not displayed!");
+            un_bookmark2.click();
+
+            // Go to 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
+            Assert.assertTrue(for_you.isDisplayed(), "For you is not displayed!");
+            for_you.click();
+
+            // Swipe up and uncheck the 'Headlines' topic
+            swipes = 0;
+            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+                swipeDown(news_view_xpath);
+                swipes++;
+            }
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
+            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            sample_topic2.click();
+        } catch (NoSuchElementException e) {
+            Assert.fail("Element not found: " + e.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void feed_whenHasNoBookmarks_showsEmptyState() {
+        try {
+            // Go to 'Saved' tab
+            WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
+            Assert.assertTrue(saved.isDisplayed(), "Saved is not displayed!");
+            saved.click();
+
+            // Verify it is empty
+            WebElement placeholder = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"No saved updates\"]"));
+            Assert.assertTrue(placeholder.isDisplayed(), "Placeholder message is not displayed!");
+
+            // Go to 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
+            Assert.assertTrue(for_you.isDisplayed(), "For you is not displayed!");
+            for_you.click();
+        } catch (NoSuchElementException e) {
+            Assert.fail("Element not found: " + e.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Unexpected error: " + e.getMessage());
+        }
+    }
+
     @AfterClass
     public void teardown() {
         if (driver != null) {
