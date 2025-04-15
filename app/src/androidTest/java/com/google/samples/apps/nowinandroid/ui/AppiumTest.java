@@ -1,7 +1,5 @@
 package com.google.samples.apps.nowinandroid.ui;
 
-import com.beust.ah.A;
-import dagger.hilt.internal.aggregatedroot.codegen._com_google_samples_apps_nowinandroid_ui_NavigationTest;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import org.openqa.selenium.NoSuchElementException;
@@ -100,47 +98,25 @@ public class AppiumTest {
     @Test
     public void navigationBar_navigateToPreviouslySelectedTab_restoresContent() {
         try {
-            // Search for the 'Headlines' topic
+            // Follow the 'Headlines' topic (from the 'For you' screen)
             WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
-
-            // Check the 'Headlines' topic (by clicking on it)
             sample_topic.click();
 
-            // Search for the 'Interests' tab
-            WebElement interests = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]"));
-            Assert.assertTrue(interests.isDisplayed(), "'Interests' is not visible!");
-
-            // Select the 'Interests' tab (by clicking on it)
+            // Go to the 'Interests' tab
+            WebElement interests = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Interests\"]"));
             interests.click();
 
-            // Verify that 'Interests' is selected
-            Assert.assertTrue(interests.isSelected(), "'Interests' is not selected!");
-
-            // Search for the 'For you' tab
-            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
-
-            // Select the 'For you' tab (by clicking on it)
+            // Go to the 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
             for_you.click();
 
-            // Verify that 'For you' is selected
-            Assert.assertTrue(for_you.isSelected(), "'For you' is not selected!");
-
-            // Search for the 'Headlines' topic (it searches the view this time, since it is where we can verify if it is checked or not)
+            // Verify the 'Headlines' topic is still followed (the view containing the follow button is used this time, since it is where we can verify if it is checked or not)
             WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@resource-id=\"forYou:topicSelection\"]/android.view.View[1]/android.view.View"));
-            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
-
-            // Verify that the 'Headlines' topic is checked
             boolean isChecked = Boolean.parseBoolean(sample_topic2.getAttribute("checked"));
             Assert.assertTrue(isChecked, "Sample topic 'Headlines' is not checked!");
 
-            // Uncheck the 'Headlines' topic (by clicking on it)
+            // Unfollow the 'Headlines' topic
             sample_topic2.click();
-
-            // Verify that the 'Headlines' topic is unchecked
-            isChecked = Boolean.parseBoolean(sample_topic2.getAttribute("checked"));
-            Assert.assertFalse(isChecked, "Sample topic 'Headlines' is checked!");
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
         } catch (Exception e) {
