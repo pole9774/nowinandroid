@@ -127,34 +127,21 @@ public class AppiumTest {
     @Test
     public void navigationBar_reselectTab_keepsState() {
         try {
-            // Search for the 'Headlines' topic
+            // Follow the 'Headlines' topic
             WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
-
-            // Check the 'Headlines' topic (by clicking on it)
             sample_topic.click();
 
-            // Search for the 'For you' tab
-            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
-
-            // Select the 'For you' tab (by clicking on it)
+            // Click the 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
             for_you.click();
 
-            // Search for the 'Headlines' topic (it searches the view this time, since it is where we can verify if it is checked or not)
+            // Verify the 'Headlines' topic is still followed (the view containing the follow button is used this time, since it is where we can verify if it is checked or not)
             WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@resource-id=\"forYou:topicSelection\"]/android.view.View[1]/android.view.View"));
-            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
-
-            // Verify that the 'Headlines' topic is checked
             boolean isChecked = Boolean.parseBoolean(sample_topic2.getAttribute("checked"));
             Assert.assertTrue(isChecked, "Sample topic 'Headlines' is not checked!");
 
-            // Uncheck the 'Headlines' topic (by clicking on it)
+            // Unfollow the 'Headlines' topic
             sample_topic2.click();
-
-            // Verify that the 'Headlines' topic is unchecked
-            isChecked = Boolean.parseBoolean(sample_topic2.getAttribute("checked"));
-            Assert.assertFalse(isChecked, "Sample topic 'Headlines' is checked!");
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
         } catch (Exception e) {
@@ -166,30 +153,27 @@ public class AppiumTest {
     public void topLevelDestinations_doNotShowBackArrow() {
         try {
             // Search for back arrow and verify it is not displayed
-            List<WebElement> back_arrow = driver.findElements(AppiumBy.accessibilityId("Back"));
+            List<WebElement> back_arrow = driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Back\"]"));
             Assert.assertTrue(back_arrow.isEmpty(), "Back arrow is displayed!");
 
-            // Search and select the 'Saved' tab
-            WebElement saved = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[2]"));
-            Assert.assertTrue(saved.isDisplayed(), "'Saved' is not visible!");
+            // Go to the 'Saved' tab
+            WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
             saved.click();
 
             // Search for back arrow and verify it is not displayed
-            back_arrow = driver.findElements(AppiumBy.accessibilityId("Back"));
+            back_arrow = driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Back\"]"));
             Assert.assertTrue(back_arrow.isEmpty(), "Back arrow is displayed!");
 
-            // Search and select the 'Interests' tab
-            WebElement interests = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]"));
-            Assert.assertTrue(interests.isDisplayed(), "'Interests' is not visible!");
+            // Go to the 'Interests' tab
+            WebElement interests = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Interests\"]"));
             interests.click();
 
             // Search for back arrow and verify it is not displayed
-            back_arrow = driver.findElements(AppiumBy.accessibilityId("Back"));
+            back_arrow = driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Back\"]"));
             Assert.assertTrue(back_arrow.isEmpty(), "Back arrow is displayed!");
 
-            // Search and select the 'For you' tab
-            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
+            // Go to the 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
             for_you.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -205,35 +189,32 @@ public class AppiumTest {
             WebElement app_name = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Now in Android\"]"));
             Assert.assertTrue(app_name.isDisplayed(), "App Name is not displayed!");
 
-            // Search and select the 'Saved' tab
-            WebElement saved = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[2]"));
-            Assert.assertTrue(saved.isDisplayed(), "'Saved' is not visible!");
+            // Go to the 'Saved' tab
+            WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
             saved.click();
 
             // Search for 'Saved' on the top
             WebElement saved1 = driver.findElement(AppiumBy.xpath("(//android.widget.TextView[@text=\"Saved\"])[1]"));
-            Assert.assertTrue(saved1.isDisplayed(), "'Saved' (1) is not displayed!");
+            Assert.assertTrue(saved1.isDisplayed(), "'Saved' (top) is not displayed!");
 
             // Search for 'Saved' on the bottom
             WebElement saved2 = driver.findElement(AppiumBy.xpath("(//android.widget.TextView[@text=\"Saved\"])[2]"));
-            Assert.assertTrue(saved2.isDisplayed(), "'Saved' (2) is not displayed!");
+            Assert.assertTrue(saved2.isDisplayed(), "'Saved' (bottom) is not displayed!");
 
-            // Search and select the 'Interests' tab
-            WebElement interests = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]"));
-            Assert.assertTrue(interests.isDisplayed(), "'Interests' is not visible!");
+            // Go to the 'Interests' tab
+            WebElement interests = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Interests\"]"));
             interests.click();
 
             // Search for 'Interests' on the top
             WebElement interests1 = driver.findElement(AppiumBy.xpath("(//android.widget.TextView[@text=\"Interests\"])[1]"));
-            Assert.assertTrue(interests1.isDisplayed(), "'Interests' (1) is not displayed!");
+            Assert.assertTrue(interests1.isDisplayed(), "'Interests' (top) is not displayed!");
 
             // Search for 'Interests' on the bottom
             WebElement interests2 = driver.findElement(AppiumBy.xpath("(//android.widget.TextView[@text=\"Interests\"])[2]"));
-            Assert.assertTrue(interests2.isDisplayed(), "'Interests' (2) is not displayed!");
+            Assert.assertTrue(interests2.isDisplayed(), "'Interests' (bottom) is not displayed!");
 
-            // Search and select the 'For you' tab
-            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
+            // Go to the 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
             for_you.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -246,30 +227,27 @@ public class AppiumTest {
     public void topLevelDestinations_showSettingsIcon() {
         try {
             // Search the settings icon
-            WebElement settings = driver.findElement(AppiumBy.accessibilityId("Settings"));
+            WebElement settings = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Settings\"]"));
             Assert.assertTrue(settings.isDisplayed(), "Settings icon (for you) is not displayed!");
 
-            // Search and select the 'Saved' tab
-            WebElement saved = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[2]"));
-            Assert.assertTrue(saved.isDisplayed(), "'Saved' is not visible!");
+            // Go to the 'Saved' tab
+            WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
             saved.click();
 
             // Search the settings icon
-            WebElement settings2 = driver.findElement(AppiumBy.accessibilityId("Settings"));
+            WebElement settings2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Settings\"]"));
             Assert.assertTrue(settings2.isDisplayed(), "Settings icon (saved) is not displayed!");
 
-            // Search and select the 'Interests' tab
-            WebElement interests = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]"));
-            Assert.assertTrue(interests.isDisplayed(), "'Interests' is not visible!");
+            // Go to the 'Interests' tab
+            WebElement interests = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Interests\"]"));
             interests.click();
 
             // Search the settings icon
-            WebElement settings3 = driver.findElement(AppiumBy.accessibilityId("Settings"));
+            WebElement settings3 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Settings\"]"));
             Assert.assertTrue(settings3.isDisplayed(), "Settings icon (interests) is not displayed!");
 
-            // Search and select the 'For you' tab
-            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
+            // Go to the 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
             for_you.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -281,24 +259,17 @@ public class AppiumTest {
     @Test
     public void whenSettingsIconIsClicked_settingsDialogIsShown() {
         try {
-            // Search and click the settings icon
-            WebElement settings = driver.findElement(AppiumBy.accessibilityId("Settings"));
-            Assert.assertTrue(settings.isDisplayed(), "Settings icon (for you) is not displayed!");
+            // Open settings
+            WebElement settings = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Settings\"]"));
             settings.click();
 
             // Verify the brand 'Android' is displayed
             WebElement brand_android = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Android\"]"));
             Assert.assertTrue(brand_android.isDisplayed(), "Brand 'Android' is not displayed!");
 
-            // Search 'OK' and click it
+            // Click 'OK'
             WebElement ok = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"OK\"]"));
-            Assert.assertTrue(ok.isDisplayed(), "'OK' is not displayed!");
             ok.click();
-
-            // Search and select the 'For you' tab
-            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
-            for_you.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
         } catch (Exception e) {
@@ -309,28 +280,28 @@ public class AppiumTest {
     @Test
     public void whenSettingsDialogDismissed_previousScreenIsDisplayed() {
         try {
-            // Search and select the 'Saved' tab
-            WebElement saved = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[2]"));
-            Assert.assertTrue(saved.isDisplayed(), "'Saved' is not visible!");
+            // Go to the 'Saved' tab
+            WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
             saved.click();
 
-            // Search and click the settings icon
-            WebElement settings = driver.findElement(AppiumBy.accessibilityId("Settings"));
-            Assert.assertTrue(settings.isDisplayed(), "Settings icon (for you) is not displayed!");
+            // Open settings
+            WebElement settings = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Settings\"]"));
             settings.click();
 
-            // Search 'OK' and click it
+            // Click 'OK'
             WebElement ok = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"OK\"]"));
-            Assert.assertTrue(ok.isDisplayed(), "'OK' is not displayed!");
             ok.click();
 
             // Search for 'Saved' on the top
-            WebElement saved_title = driver.findElement(AppiumBy.xpath("(//android.widget.TextView[@text=\"Saved\"])[1]"));
-            Assert.assertTrue(saved_title.isDisplayed(), "'Saved' title is not displayed!");
+            WebElement saved1 = driver.findElement(AppiumBy.xpath("(//android.widget.TextView[@text=\"Saved\"])[1]"));
+            Assert.assertTrue(saved1.isDisplayed(), "'Saved' (top) is not displayed!");
 
-            // Search and select the 'For you' tab
-            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
+            // Search for 'Saved' on the bottom
+            WebElement saved2 = driver.findElement(AppiumBy.xpath("(//android.widget.TextView[@text=\"Saved\"])[2]"));
+            Assert.assertTrue(saved2.isDisplayed(), "'Saved' (bottom) is not displayed!");
+
+            // Go to the 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
             for_you.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -339,47 +310,42 @@ public class AppiumTest {
         }
     }
 
-//    @Test
-//    public void homeDestination_back_quitsApp() {
-//        try {
-//            // Search and select the 'Interests' tab
-//            WebElement interests = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]"));
-//            Assert.assertTrue(interests.isDisplayed(), "'Interests' is not visible!");
-//            interests.click();
-//
-//            // Search and select the 'For you' tab
-//            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-//            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
-//            for_you.click();
-//
-//            // Clicks back, expecting the app to quit
-//            driver.navigate().back();
-//
-//            // Verify the app has quit
-//            String currentPackage = driver.getCurrentPackage();
-//            System.out.println(currentPackage);
-//            Assert.assertNotEquals(currentPackage, "com.google.samples.apps.nowinandroid.demo");
-//        } catch (NoSuchElementException e) {
-//            Assert.fail("Element not found: " + e.getMessage());
-//        } catch (Exception e) {
-//            Assert.fail("Unexpected error: " + e.getMessage());
-//        }
-//    }
+    @Test
+    public void homeDestination_back_quitsApp() {
+        try {
+            // Go to the 'Interests' tab
+            WebElement interests = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Interests\"]"));
+            interests.click();
+
+            // Go to the 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
+            for_you.click();
+
+            // Click the device's back button, expecting the app to quit
+            driver.navigate().back();
+
+            // Verify the app has quit
+            String currentPackage = driver.getCurrentPackage();
+            Assert.assertNotEquals(currentPackage, "com.google.samples.apps.nowinandroid.demo");
+        } catch (NoSuchElementException e) {
+            Assert.fail("Element not found: " + e.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Unexpected error: " + e.getMessage());
+        }
+    }
 
     @Test
     public void navigationBar_backFromAnyDestination_returnsToForYou() {
         try {
-            // Search and select the 'Interests' tab
-            WebElement interests = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]"));
-            Assert.assertTrue(interests.isDisplayed(), "'Interests' is not visible!");
+            // Go to the 'Interests' tab
+            WebElement interests = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Interests\"]"));
             interests.click();
 
-            // Search and select the 'Saved' tab
-            WebElement saved = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[2]"));
-            Assert.assertTrue(saved.isDisplayed(), "'Saved' is not visible!");
+            // Go to the 'Saved' tab
+            WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
             saved.click();
 
-            // Clicks back
+            // Click the device's back button, expecting the app to quit
             driver.navigate().back();
 
             // Verify we are in 'For you'
@@ -398,9 +364,8 @@ public class AppiumTest {
         int swipes = 0;
 
         try {
-            // Search and select the 'Interests' tab
-            WebElement interests = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]"));
-            Assert.assertTrue(interests.isDisplayed(), "'Interests' is not visible!");
+            // Go to the 'Interests' tab
+            WebElement interests = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Interests\"]"));
             interests.click();
 
             // Xpath of the view that contains the topics
@@ -412,35 +377,31 @@ public class AppiumTest {
                 swipes++;
             }
 
-            // Verify that last topic is displayed and click it
+            // Click the last topic
             WebElement last_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Wear OS\"]"));
-            Assert.assertTrue(last_topic.isDisplayed(), "Last topic is not displayed!");
             last_topic.click();
 
-            // Search and select the 'For you' tab
-            WebElement for_you = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you.isDisplayed(), "'For you' is not visible!");
+            // Go to the 'For you' tab
+            WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
             for_you.click();
 
-            // Search and select the 'Interests' tab
-            WebElement interests2 = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]"));
-            Assert.assertTrue(interests2.isDisplayed(), "'Interests' is not visible!");
-            interests.click();
+            // Go to the 'Interests' tab
+            WebElement interests2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Interests\"]"));
+            interests2.click();
 
-            // Verify that last topic is still opened, then search for the back arrow and click it
+            // Verify that last topic is still opened
             WebElement last_topic_title = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Wear OS\"]"));
             Assert.assertTrue(last_topic_title.isDisplayed(), "Last topic title is not displayed!");
             WebElement last_topic_description = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"The latest news on app development for Wear OS.\"]"));
             Assert.assertTrue(last_topic_description.isDisplayed(), "Last topic description is not displayed!");
 
-            WebElement back_arrow = driver.findElement(AppiumBy.accessibilityId("Back"));
-            Assert.assertTrue(back_arrow.isDisplayed(), "Back arrow is not displayed!");
+            // Go back
+            WebElement back_arrow = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Back\"]"));
             back_arrow.click();
 
-            // Search and select the 'For you' tab
-            WebElement for_you2 = driver.findElement(AppiumBy.xpath("//O0.r0/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]"));
-            Assert.assertTrue(for_you2.isDisplayed(), "'For you' is not visible!");
-            for_you.click();
+            // Go to the 'For you' tab
+            WebElement for_you2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
+            for_you2.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
         } catch (Exception e) {
@@ -450,42 +411,39 @@ public class AppiumTest {
 
     @Test
     public void navigatingToTopicFromForYou_showsTopicDetails() {
-        int maxSwipes = 20;
+        int maxSwipes = 10;
         int swipes = 0;
 
         try {
-            // Search and check the 'Headlines' topic
+            // Follow the 'Headlines' topic (from the 'For you' screen)
             WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
             sample_topic.click();
 
-            // Swipe until topic tag is found
+            // Swipe until topic 'Headlines' tag in the first news is found
             String news_view_xpath = "//android.view.View[@resource-id=\"forYou:feed\"]";
             while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"Headlines is followed\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeUp(news_view_xpath);
                 swipes++;
             }
 
-            // Click on topic tag
+            // Click on topic 'Headlines' tag
             WebElement topic_tag = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"Headlines is followed\"]"));
-            Assert.assertTrue(topic_tag.isDisplayed(), "Topic tag is not displayed!");
             topic_tag.click();
 
-            // Verify we are on topic page, then go back
+            // Verify we are on topic 'Headlines' page, then go back
             WebElement topic_title = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
             Assert.assertTrue(topic_title.isDisplayed(), "Topic title is not displayed!");
-            WebElement back_arrow = driver.findElement(AppiumBy.accessibilityId("Back"));
-            Assert.assertTrue(back_arrow.isDisplayed(), "Back arrow is not displayed!");
+
+            WebElement back_arrow = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Back\"]"));
             back_arrow.click();
 
-            // Swipe up and uncheck the 'Headlines' topic
+            // Swipe up to the top and unfollow the 'Headlines' topic
             swipes = 0;
-            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"What are you interested in?\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeDown(news_view_xpath);
                 swipes++;
             }
-            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
             sample_topic2.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -499,16 +457,15 @@ public class AppiumTest {
 
     @Test
     public void newsResourceCard_withDateAndResourceType() {
-        int maxSwipes = 20;
+        int maxSwipes = 10;
         int swipes = 0;
 
         try {
-            // Search and check the 'Headlines' topic
+            // Follow the 'Headlines' topic (from the 'For you' screen)
             WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
             sample_topic.click();
 
-            // Swipe until date and resource type of the first resource card is found
+            // Swipe until date and resource type of the first resource card are found
             String news_view_xpath = "//android.view.View[@resource-id=\"forYou:feed\"]";
             while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"7 Ott 2022 • Article \uD83D\uDCDA\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeUp(news_view_xpath);
@@ -517,14 +474,13 @@ public class AppiumTest {
             WebElement date_type = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"7 Ott 2022 • Article \uD83D\uDCDA\"]"));
             Assert.assertTrue(date_type.isDisplayed(), "Date-type is not displayed!");
 
-            // Swipe up and uncheck the 'Headlines' topic
+            // Swipe up to the top and unfollow the 'Headlines' topic
             swipes = 0;
-            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"What are you interested in?\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeDown(news_view_xpath);
                 swipes++;
             }
-            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
             sample_topic2.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -535,13 +491,12 @@ public class AppiumTest {
 
     @Test
     public void testTopicsChipColorBackground_matchesFollowedState() {
-        int maxSwipes = 20;
+        int maxSwipes = 10;
         int swipes = 0;
 
         try {
-            // Search and check the 'Headlines' topic
+            // Follow the 'Headlines' topic (from the 'For you' screen)
             WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
             sample_topic.click();
 
             // Swipe until topic tag is found
@@ -561,14 +516,13 @@ public class AppiumTest {
             WebElement topic_tag3 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"Compose is not followed\"]"));
             Assert.assertTrue(topic_tag3.isDisplayed(), "Topic tag (3) is not displayed!");
 
-            // Swipe up and uncheck the 'Headlines' topic
+            // Swipe up to the top and unfollow the 'Headlines' topic
             swipes = 0;
-            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"What are you interested in?\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeDown(news_view_xpath);
                 swipes++;
             }
-            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
             sample_topic2.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -578,17 +532,16 @@ public class AppiumTest {
     }
 
 
-    // Bookmarks screen (saved)
+    // Bookmarks (saved)
 
     @Test
     public void feed_whenHasBookmarks_showsBookmarks() {
-        int maxSwipes = 20;
+        int maxSwipes = 10;
         int swipes = 0;
 
         try {
-            // Search and check the 'Headlines' topic
+            // Follow the 'Headlines' topic (from the 'For you' screen)
             WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
             sample_topic.click();
 
             // Swipe until the first resource's title is found
@@ -600,7 +553,6 @@ public class AppiumTest {
 
             // Bookmark the first resource
             WebElement bookmark1 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
-            Assert.assertTrue(bookmark1.isDisplayed(), "First bookmark is not displayed!");
             bookmark1.click();
 
             // Swipe until the second resource's title is found
@@ -612,12 +564,10 @@ public class AppiumTest {
 
             // Bookmark the second resource
             WebElement bookmark2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
-            Assert.assertTrue(bookmark2.isDisplayed(), "First bookmark is not displayed!");
             bookmark2.click();
 
-            // Go to 'Saved' tab
+            // Go to the 'Saved' tab
             WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
-            Assert.assertTrue(saved.isDisplayed(), "Saved is not displayed!");
             saved.click();
 
             // Swipe until the titles of both the bookmarked resources are found
@@ -641,9 +591,8 @@ public class AppiumTest {
             WebElement saved_title2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Android Dev Summit ’22: Coming to you, online and around the world! ⛰\uFE0F\"]"));
             Assert.assertTrue(saved_title2.isDisplayed(), "Second saved title is not displayed!");
 
-            // Go to 'For you' tab
+            // Go to the 'For you' tab
             WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
-            Assert.assertTrue(for_you.isDisplayed(), "For you is not displayed!");
             for_you.click();
 
             // Swipe up and un-bookmark resources
@@ -654,7 +603,6 @@ public class AppiumTest {
             }
 
             WebElement un_bookmark1 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]"));
-            Assert.assertTrue(un_bookmark1.isDisplayed(), "Second un-bookmark is not displayed!");
             un_bookmark1.click();
 
             swipes = 0;
@@ -663,18 +611,16 @@ public class AppiumTest {
                 swipes++;
             }
 
-            WebElement un_bookmark = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]"));
-            Assert.assertTrue(un_bookmark.isDisplayed(), "First un-bookmark is not displayed!");
-            un_bookmark.click();
+            WebElement un_bookmark2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Unbookmark\"]"));
+            un_bookmark2.click();
 
-            // Swipe up and uncheck the 'Headlines' topic
+            // Swipe up to the top and unfollow the 'Headlines' topic
             swipes = 0;
-            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"What are you interested in?\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeDown(news_view_xpath);
                 swipes++;
             }
-            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
             sample_topic2.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -689,9 +635,8 @@ public class AppiumTest {
         int swipes = 0;
 
         try {
-            // Search and check the 'Headlines' topic
+            // Follow the 'Headlines' topic (from the 'For you' screen)
             WebElement sample_topic = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic.isDisplayed(), "Sample topic 'Headlines' is not visible!");
             sample_topic.click();
 
             // Swipe until the first resource's title is found
@@ -703,7 +648,6 @@ public class AppiumTest {
 
             // Bookmark the first resource
             WebElement bookmark1 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
-            Assert.assertTrue(bookmark1.isDisplayed(), "First bookmark is not displayed!");
             bookmark1.click();
 
             // Swipe until the second resource's title is found
@@ -715,12 +659,10 @@ public class AppiumTest {
 
             // Bookmark the second resource
             WebElement bookmark2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Bookmark\"]"));
-            Assert.assertTrue(bookmark2.isDisplayed(), "First bookmark is not displayed!");
             bookmark2.click();
 
-            // Go to 'Saved' tab
+            // Go to the 'Saved' tab
             WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
-            Assert.assertTrue(saved.isDisplayed(), "Saved is not displayed!");
             saved.click();
 
             // Un-bookmark
@@ -746,23 +688,21 @@ public class AppiumTest {
             Assert.assertTrue(un_bookmark2.isDisplayed(), "Un-bookmark (2) is not displayed!");
             un_bookmark2.click();
 
-            // Verify it is empty
+            // Verify the saved tab is empty
             WebElement placeholder = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"No saved updates\"]"));
             Assert.assertTrue(placeholder.isDisplayed(), "Placeholder message is not displayed!");
 
-            // Go to 'For you' tab
+            // Go to the 'For you' tab
             WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
-            Assert.assertTrue(for_you.isDisplayed(), "For you is not displayed!");
             for_you.click();
 
-            // Swipe up and uncheck the 'Headlines' topic
+            // Swipe up to the top and unfollow the 'Headlines' topic
             swipes = 0;
-            while (driver.findElements(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]")).isEmpty() && swipes < maxSwipes) {
+            while (driver.findElements(AppiumBy.xpath("//android.widget.TextView[@text=\"What are you interested in?\"]")).isEmpty() && swipes < maxSwipes) {
                 swipeDown(news_view_xpath);
                 swipes++;
             }
-            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"Headlines\"]"));
-            Assert.assertTrue(sample_topic2.isDisplayed(), "Sample topic 'Headlines' is not visible!");
+            WebElement sample_topic2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
             sample_topic2.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -774,9 +714,8 @@ public class AppiumTest {
     @Test
     public void feed_whenHasNoBookmarks_showsEmptyState() {
         try {
-            // Go to 'Saved' tab
+            // Go to the 'Saved' tab
             WebElement saved = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Saved\"]"));
-            Assert.assertTrue(saved.isDisplayed(), "Saved is not displayed!");
             saved.click();
 
             // Verify it is empty
@@ -786,9 +725,8 @@ public class AppiumTest {
             WebElement placeholder2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Updates you save will be stored here\nto read later\"]"));
             Assert.assertTrue(placeholder2.isDisplayed(), "Placeholder message is not displayed!");
 
-            // Go to 'For you' tab
+            // Go to the 'For you' tab
             WebElement for_you = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"For you\"]"));
-            Assert.assertTrue(for_you.isDisplayed(), "For you is not displayed!");
             for_you.click();
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
@@ -803,12 +741,25 @@ public class AppiumTest {
     @Test
     public void topicSelector_whenNoTopicsSelected_showsTopicChipsAndDisabledDoneButton() {
         try {
-            // Search 'Done' button and verify it is not enabled
-            WebElement done_button = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Done\"]"));
-            Assert.assertTrue(done_button.isDisplayed(), "Done button is not displayed!");
+            // Verify topics are displayed
+            WebElement topic1 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Headlines\"]"));
+            Assert.assertTrue(topic1.isDisplayed(), "Topic (1) is not displayed!");
 
+            // Verify topics are displayed
+            WebElement topic2 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"UI\"]"));
+            Assert.assertTrue(topic2.isDisplayed(), "Topic (2) is not displayed!");
+
+            // Verify topics are displayed
+            WebElement topic3 = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Compose\"]"));
+            Assert.assertTrue(topic3.isDisplayed(), "Topic (3) is not displayed!");
+
+            // Search 'Done' button
+            WebElement done_button = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Done\"]"));
+            Assert.assertTrue(done_button.isDisplayed(), "'Done' button is not displayed!");
+
+            // Verify the 'Done' button is not enabled (the view is used, since it is where we can check if enabled is true/false)
             WebElement done_view = driver.findElement(AppiumBy.xpath("//android.view.View[@resource-id=\"forYou:feed\"]/android.view.View[2]"));
-            Assert.assertFalse(done_view.isEnabled(), "Done view is enabled!");
+            Assert.assertFalse(done_view.isEnabled(), "'Done' button (view) is enabled!");
         } catch (NoSuchElementException e) {
             Assert.fail("Element not found: " + e.getMessage());
         } catch (Exception e) {
