@@ -127,6 +127,11 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+appium-java-client = { group = "io.appium", name = "java-client", version = "9.4.0" }
+selenium-java = { module = "org.seleniumhq.selenium:selenium-java", version = "4.14.1" }
+testng = { module = "org.testng:testng", version = "7.7.1" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version = "2.0.7" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

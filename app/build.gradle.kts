@@ -132,6 +132,12 @@ dependencies {
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
+
+    androidTestImplementation(libs.appium.java.client)
+    androidTestImplementation(libs.selenium.java)
+    androidTestImplementation(libs.testng)
+    androidTestImplementation(libs.slf4j.api)
+    androidTestImplementation(libs.slf4j.simple)
 }
 
 // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
